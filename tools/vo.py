@@ -46,6 +46,8 @@ async def retry(lid, text):
 
 async def main():
     res = {}
+    if not P.get("lines"):
+        json.dump({}, open(OUT, "w")); print("no VO lines (music-only film)"); return
     for ln in P["lines"]:
         lid, text = ln["id"], ln["text"]
         o = old.get(lid)

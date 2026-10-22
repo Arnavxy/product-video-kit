@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- Desktop walkthrough: recorded take in a browser window, a drawn cursor following the recorded mouse path,
+     camera punch-ins on clicks, and a magnifier lens. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tools/kit.css">
+<style>
+  #stage { background: linear-gradient(135deg, #e9e4ff 0%, #f6f3ee 50%, #dff3e8 100%); font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; color: #1b1a22; }
+  .rig { left: 0; top: 0; transform-origin: 0 0; }
+  .kit-browser { box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 50px 120px rgba(40,30,80,.28); }
+  .ripple { position: absolute; width: 70px; height: 70px; margin: -35px; border-radius: 50%; border: 4px solid #2fa36f; z-index: 45; }
+  .cap { left: 70px; bottom: 70px; padding: 18px 28px; border-radius: 18px; background: #1b1a22; color: #fff; font-size: 38px; font-weight: 700; letter-spacing: -.8px; z-index: 60; }
+  .end { inset: 0; display: flex; align-items: center; justify-content: center; gap: 30px; font-size: 140px; font-weight: 850; letter-spacing: -5px; }
+  .end .m { width: 130px; height: 130px; border-radius: 38px; background: #2fa36f; position: relative; }
+  .end .m::after { content: ""; position: absolute; left: 45px; top: 22px; width: 30px; height: 62px; border: solid #fff; border-width: 0 14px 14px 0; transform: rotate(45deg); }
+  .end .row { display: flex; align-items: baseline; gap: 30px; }
+  .end .m { align-self: center; }
+  .end small { font-size: 60px; color: #8a8797; letter-spacing: -2px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="data.js"></script>
+<script src="clip.js"></script>
+<script src="../../../tools/engine.js"></script>
+<script src="film.js"></script>
+</body>
+</html>

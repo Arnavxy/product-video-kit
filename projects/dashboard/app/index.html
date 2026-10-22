@@ -1,0 +1,60 @@
+<!doctype html>
+<!-- Fictional "Tidy for Teams" dashboard for the desktop-walkthrough sample. -->
+<html><head><meta charset="utf-8"><title>Tidy for Teams</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:15px/1.4 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:#1b1a22;background:#f6f5f2;display:flex;height:100vh}
+aside{width:230px;background:#fff;border-right:1px solid #ebe9e4;padding:22px 16px}
+.logo{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:850;letter-spacing:-.6px;margin:0 8px 28px}
+.logo i{width:28px;height:28px;border-radius:8px;background:#2fa36f;position:relative}
+.logo i::after{content:"";position:absolute;left:10px;top:5px;width:7px;height:13px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+aside a{display:block;padding:10px 12px;border-radius:10px;color:#5b5868;text-decoration:none;font-weight:600;margin-bottom:2px}
+aside a.on{background:#f0eee9;color:#1b1a22}
+main{flex:1;padding:28px 36px;overflow:hidden}
+h1{font-size:30px;letter-spacing:-.8px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.top .sp{flex:1}
+.chip{padding:8px 16px;border-radius:99px;background:#fff;border:1px solid #e4e1da;font-weight:600;color:#5b5868;cursor:pointer;transition:all .2s}
+.chip.on{background:#1b1a22;color:#fff;border-color:#1b1a22}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.kpi{background:#fff;border-radius:16px;padding:18px 20px;border:1px solid #ebe9e4;cursor:pointer;transition:all .25s}
+.kpi b{display:block;font-size:34px;letter-spacing:-1px;margin-top:4px}
+.kpi span{color:#8a8797;font-weight:600;font-size:13px}
+.kpi.risk b{color:#e0532f}.kpi.on{box-shadow:0 0 0 3px #e0532f55;border-color:#e0532f}
+table{width:100%;background:#fff;border-radius:16px;border:1px solid #ebe9e4;border-collapse:separate;border-spacing:0;overflow:hidden}
+th{text-align:left;color:#8a8797;font-size:12px;text-transform:uppercase;letter-spacing:.8px;padding:14px 18px;border-bottom:1px solid #ebe9e4}
+td{padding:14px 18px;border-bottom:1px solid #f1efeb}
+tr{transition:opacity .3s,background .3s}
+tr.hide{display:none}
+tr.dim td{opacity:.28}
+tr.hl td{background:#fff4f0}
+.pill{padding:4px 10px;border-radius:99px;font-size:12px;font-weight:700}
+.ok{background:#e6f5ec;color:#1f7a50}.risk{background:#fde9e3;color:#c4431f}.late{background:#f4e6fb;color:#8a3fb3}
+.prog{width:140px;height:8px;border-radius:9px;background:#efede8;overflow:hidden}.prog i{display:block;height:100%;background:#2fa36f}
+.risk-row .prog i{background:#e0532f}
+.av{display:inline-flex}.av span{width:26px;height:26px;border-radius:50%;border:2px solid #fff;margin-left:-6px;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
+</style></head><body>
+<aside><div class="logo"><i></i>Tidy</div><a class="on">Projects</a><a>My tasks</a><a>Team</a><a>Reports</a><a>Settings</a></aside>
+<main>
+<div class="top"><h1>Projects</h1><div class="sp"></div>
+<div class="chip on" data-team="all">All teams</div><div class="chip" data-team="design">Design</div><div class="chip" data-team="eng">Engineering</div><div class="chip" data-team="mkt">Marketing</div></div>
+<div class="kpis"><div class="kpi"><span>Active projects</span><b id="k1">12</b></div><div class="kpi"><span>On track</span><b id="k2">8</b></div>
+<div class="kpi risk" id="riskcard"><span>At risk</span><b id="k3">3</b></div><div class="kpi"><span>Done this month</span><b>21</b></div></div>
+<table><thead><tr><th>Project</th><th>Team</th><th>Owner</th><th>Status</th><th>Progress</th><th>Due</th></tr></thead><tbody id="rows"></tbody></table>
+</main>
+<script>
+const R=[["Website refresh","design","ok",72,"Nov 14"],["Mobile onboarding","design","risk",38,"Nov 3"],["Billing v2","eng","ok",81,"Nov 20"],
+["Search speed-up","eng","risk",45,"Nov 2"],["Q4 campaign","mkt","ok",64,"Dec 1"],["Partner newsletter","mkt","late",20,"Oct 28"],
+["Design system","design","ok",90,"Nov 30"],["API docs","eng","ok",58,"Dec 5"],["Launch video","mkt","risk",33,"Nov 6"]];
+const T={design:"Design",eng:"Engineering",mkt:"Marketing"},C=["#7c5cf6","#2fa36f","#ff8a3d","#e0532f","#3a9cf9"];
+const S={ok:["On track","ok"],risk:["At risk","risk"],late:["Overdue","late"]};
+document.getElementById("rows").innerHTML=R.map((r,i)=>`<tr data-team="${r[1]}" data-st="${r[2]}" class="${r[2]==="risk"?"risk-row":""}"><td><b>${r[0]}</b></td><td>${T[r[1]]}</td><td><div class="av">${[0,1,2].slice(0,1+i%3).map(k=>`<span style="background:${C[(i+k)%5]}">${"MLAJS"[(i+k)%5]}</span>`).join("")}</div></td><td><span class="pill ${S[r[2]][1]}">${S[r[2]][0]}</span></td><td><div class="prog"><i style="width:${r[3]}%"></i></div></td><td>${r[4]}</td></tr>`).join("");
+let team="all",risk=false;
+function upd(){const rows=[...document.querySelectorAll("#rows tr")];
+ rows.forEach(tr=>{tr.classList.toggle("hide",team!=="all"&&tr.dataset.team!==team);tr.classList.toggle("dim",risk&&tr.dataset.st!=="risk");tr.classList.toggle("hl",risk&&tr.dataset.st==="risk")});
+ const vis=rows.filter(tr=>!tr.classList.contains("hide"));
+ document.getElementById("k1").textContent=vis.length;document.getElementById("k2").textContent=vis.filter(t=>t.dataset.st==="ok").length;document.getElementById("k3").textContent=vis.filter(t=>t.dataset.st==="risk").length;
+ document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.team===team));document.getElementById("riskcard").classList.toggle("on",risk)}
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{team=c.dataset.team;upd()});
+document.getElementById("riskcard").onclick=()=>{risk=!risk;upd()};
+</script></body></html>

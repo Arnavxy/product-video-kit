@@ -6,8 +6,10 @@ from PIL import Image
 proj = sys.argv[1]
 D = os.path.join(proj, "stills")
 files = sorted(f for f in os.listdir(D) if f.startswith("t") and f.endswith(".jpg"))
-per = 4
-w, h = 480, 270
+iw, ih = Image.open(os.path.join(D, files[0])).size
+per = 4 if iw >= ih else 6                     # keeps the film's aspect ratio (16:9 or 9:16)
+w = 480 if iw >= ih else 270
+h = round(w * ih / iw)
 rows = (len(files) + per - 1) // per
 sheet = Image.new("RGB", (per * w + (per - 1) * 8, rows * h + (rows - 1) * 8), "#222")
 for i, f in enumerate(files):

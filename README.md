@@ -6,8 +6,6 @@ local tools. No video editor, no paid services, no stock-footage subscriptions.
 [![CI](https://github.com/Arnavxy/product-video-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/Arnavxy/product-video-kit/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-<p align="center"><img src="docs/preview.gif" width="640" alt="A frame-by-frame preview of the example film: a phone mock-up of a to-do app, captions and karaoke subtitles"></p>
-
 You write a script, a scripted screen recording and a small HTML "edit". The kit voices the script with
 neural TTS, records your product with Playwright, cuts every shot to the spoken words and the music's
 beat, renders 1080p60 frames in headless Chrome, designs the sound, mixes, and encodes an mp4.
@@ -22,6 +20,59 @@ git clone https://github.com/Arnavxy/product-video-kit && cd product-video-kit
 
 ---
 
+## Sample films
+
+Six films, all made with this kit and all in [`projects/`](projects/), so you can rebuild any of them
+with `./video.sh all <name>`. Every product, person and number in them is fictional. The previews are
+silent GIFs: click **▶ with sound** to watch the real mp4.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+<img src="docs/samples/teaser.gif" alt="Beat-synced teaser: words slam in on each beat, a 3D field of app cards orbits, glitch logo">
+<b>Launch teaser</b> · 13 s · music only · <a href="docs/samples/teaser.mp4">▶ with sound</a><br>
+Kinetic type on every beat, a white flash on the drop, a 3D field of UI cards pumping with the kick,
+and an RGB-glitch logo on the final hit. Original synth track. <code>projects/teaser</code>
+</td>
+<td width="50%" valign="top">
+<img src="docs/samples/website.gif" alt="Website promo: a 3D browser scrolls a landing page, sections pop out toward the camera, then a tilted fly-over">
+<b>Website promo</b> · 15 s · music only · <a href="docs/samples/website.mp4">▶ with sound</a><br>
+Captures a landing page, then scrolls it in a 3D browser. Cards and pricing lift out of the page on the
+beat, then the camera flies over the whole page. <code>projects/website</code>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<img src="docs/samples/stats.gif" alt="Data story: bar chart, line chart and donut animate as the voice says each number">
+<b>Data story</b> · 15 s · voiceover · <a href="docs/samples/stats.mp4">▶ with sound</a><br>
+Counters, a bar chart, a self-drawing line chart and a donut, each landing on the exact spoken number
+("<i>forty</i> percent", "by <i>half</i>"). Karaoke subtitles. Labelled as illustrative data. <code>projects/stats</code>
+</td>
+<td valign="top">
+<img src="docs/samples/dashboard.gif" alt="Desktop walkthrough: a SaaS dashboard in a browser, a cursor clicks filters, camera punches in, a magnifier lens">
+<b>Desktop walkthrough</b> · 14 s · voiceover · <a href="docs/samples/dashboard.mp4">▶ with sound</a><br>
+A recorded web app in a browser window, with a drawn cursor following the recorded mouse path,
+click ripples and camera punch-ins. A magnifier lens opens on "<i>before it slips</i>". <code>projects/dashboard</code>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<img src="docs/samples/example.gif" alt="App walkthrough: phone mock-up of a to-do app with captions and subtitles">
+<b>App walkthrough</b> · 23 s · voiceover · <a href="docs/samples/example.mp4">▶ with sound</a><br>
+The starter project. A phone take re-timed so each tap lands on its word, with a punch-in while typing,
+feature captions and an end card. <code>projects/example</code>
+</td>
+<td valign="top" align="center">
+<img src="docs/samples/reel.gif" width="270" alt="Vertical 9:16 reel: big captions, phone, confetti on Done">
+<br><b>Vertical reel (9:16)</b> · 10 s · voiceover · <a href="docs/samples/reel.mp4">▶ with sound</a><br>
+1080×1920 for Reels, Shorts and TikTok. One-word captions, beat-synced zooms, confetti on "<i>Done.</i>",
+and a final hit on the bar the edit picks. <code>projects/reel</code>
+</td>
+</tr>
+</table>
+
+---
+
 ## The tools
 
 | Job | Tool | Why this one |
@@ -29,10 +80,10 @@ git clone https://github.com/Arnavxy/product-video-kit && cd product-video-kit
 | Record the product | **Playwright** + Chrome DevTools screencast (`record.mjs`) | Scripted, repeatable take at 2× (Retina). Logs every tap and named moment so the edit can sync to them. Re-record any time the UI changes. |
 | Capture a website | **Playwright** (`tools/capture_site.mjs`) | Scrolls first so scroll-animations fire, then saves each section, the full page and every image. |
 | Use Figma designs | **Figma REST API** (`tools/figma_export.py`) | Exports every screen frame in a section as PNG — make a film from designs before the app exists. |
-| Edit / animate | **HTML + CSS + JS "director"** (`film/film.js` + `tools/engine.js`) | The edit is code: `render(t)` draws the frame at time *t*. Phone mock-ups, zooms, captions, subtitles, title cards — anything a browser can draw. |
-| Render | **Playwright** (headless Chrome) → JPEG frames (`tools/render.mjs`) | Deterministic, 1080p60, parallel pages. |
+| Edit / animate | **HTML + CSS + JS "director"** (`film/film.js` + `tools/engine.js`) | The edit is code: `render(t)` draws the frame at time *t*. Built in: phone and browser mock-ups, a cursor that follows the recorded mouse, magnifier lens, counters, karaoke subtitles, words that appear as spoken. Plus anything CSS, SVG or 3D transforms can draw. |
+| Render | **Playwright** (headless Chrome) → JPEG frames (`tools/render.mjs`) | Deterministic, 60 fps, parallel pages. 1920×1080 by default; any size via `project.json` (`1080×1920` for vertical). |
 | Voiceover | **edge-tts** — Microsoft neural voices, free, no account (`tools/vo.py`) | Natural voices (Andrew, Ava, Hindi Swara…) **with word timings**, so visuals land on exact words. |
-| Music | Any track (e.g. **Mixkit**, free licence) + beat-grid fit (`tools/beatgrid.py`), or the built-in synth bed (`tools/music.py`) | Cuts land on the beat. The fit measures the real tempo from the drums — never trust a listed BPM. |
+| Music | Any track (e.g. **Mixkit**, free licence) + beat-grid fit (`tools/beatgrid.py`), or a built-in original soundtrack: `chill` or `drive` (with a drop and a final hit) (`tools/music.py`) | Cuts land on the beat. The fit measures the real tempo from the drums — never trust a listed BPM. |
 | Sound effects | Synthesised in **numpy** (`tools/mix.py`) | Whooshes, taps, pops, impacts, chimes — generated, no sample licences. Placed by `cue()` calls in the film. |
 | Mix | **numpy + ffmpeg loudnorm** (`tools/mix.py`) | Music ducks under the voice automatically; output normalised to −14 LUFS (YouTube/Instagram level). |
 | Encode | **ffmpeg** (H.264 + AAC) | Plays everywhere: WhatsApp, Slack, Drive, YouTube, Keynote. |
@@ -44,9 +95,20 @@ Optional: **Claude Code** in this folder does all of the above from plain Englis
 
 ## Setup (once, ~5 minutes)
 
-Requirements: macOS or Linux, Node 18+, Python 3.9+, ffmpeg. `./setup.sh` installs what's missing
-(Homebrew on macOS — install it from https://brew.sh first; apt on Debian/Ubuntu), then checks each piece.
-Re-run it any time. Windows: use WSL.
+Requirements: Node 18+, Python 3.9+, ffmpeg. `./setup.sh` installs what's missing (Homebrew on macOS:
+install it from https://brew.sh first; apt on Debian/Ubuntu), then checks each piece. Re-run it any time.
+
+### Does it work on my computer?
+
+| Platform | Status |
+|---|---|
+| **macOS** (Apple Silicon or Intel) | ✅ Supported. All the sample films were made on a Mac. |
+| **Linux** (Ubuntu / Debian) | ✅ Supported. CI builds the example film on Ubuntu for every commit. Other distros work if you install ffmpeg, Node and Python yourself. |
+| **Windows 10 / 11** | ✅ **Through WSL2.** Install [WSL](https://learn.microsoft.com/windows/wsl/install) (`wsl --install` in PowerShell, which gives you Ubuntu), then run the same commands inside Ubuntu. This takes the Linux path that CI tests, but nobody has tried it on a real Windows machine yet; reports welcome. Open the finished mp4 from Explorer at `\\wsl$\Ubuntu\home\<you>\product-video-kit\projects\...`. |
+| Windows without WSL | ❌ Not supported. The scripts are bash. PRs welcome. |
+
+Fonts differ by platform: the samples use the system UI font, which is San Francisco on macOS and a
+fallback on Linux. For identical output everywhere, add a `.woff2` font to your project (see the playbook).
 
 ## Make the example film (~2 minutes)
 
@@ -162,8 +224,11 @@ tools/                      shared — you rarely edit these
   mix.py                    voice + ducked music + SFX → mix.wav
   qa.py, sheet.py           checks and contact sheets
   capture_site.mjs, figma_export.py, browser.mjs
+projects/
+  example/                  the starter: app walkthrough (copy it with ./video.sh new <name>)
+  teaser/ website/ stats/ dashboard/ reel/   the other sample films — each shows different techniques
 projects/<name>/
-  project.json              script, voice, music, output path
+  project.json              script, voice, music, size, output path
   record.mjs                the screen take
   film/index.html, film.js  the look (CSS) and the edit
   demo-app/                 (example only) the fake app being filmed

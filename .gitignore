@@ -17,3 +17,4 @@ projects/*/music/*.wav
 projects/*/film/data.js
 projects/*/film/clip.js
 projects/*/assets/
+projects/*/film/site.js

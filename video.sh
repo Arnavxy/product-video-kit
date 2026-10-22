@@ -38,7 +38,7 @@ case "$cmd" in
       projects/example/ "projects/$name/"
     echo "created projects/$name — edit project.json (script), record.mjs (the take), film/film.js (the edit)"
     echo "then: ./video.sh all $name" ;;
-  record)   step record;   node "$proj/record.mjs" ;;
+  record)   if [[ -f "$proj/record.mjs" ]]; then step record; node "$proj/record.mjs"; else echo "($proj has no record.mjs — nothing to record)"; fi ;;
   vo)       step vo;       $PY tools/vo.py "$proj" "$@" ;;
   beatgrid) step beatgrid; $PY tools/beatgrid.py "$proj" ;;
   sched)    step sched;    $PY tools/sched.py "$proj" ;;

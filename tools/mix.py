@@ -64,7 +64,16 @@ def chime():
 def riser(d=1.5):
     n = int(d * SR); u = np.linspace(0, 1, n)
     return lp(rng.standard_normal(n), 200 + 7000 * u ** 2) * u ** 2 * 0.7
-LIB = {"whoosh": lambda: whoosh(), "whooshdown": lambda: whoosh(0.4, False), "pop": pop, "tap": tap,
+def click():
+    tt = np.arange(int(0.03 * SR)) / SR
+    return (lp(rng.standard_normal(len(tt)), 6000) * np.exp(-tt * 300) + np.sin(2 * np.pi * 1500 * tt) * np.exp(-tt * 200) * 0.3) * 0.7
+def glitch():
+    n = int(0.25 * SR); y = np.zeros(n)
+    for k in range(6):
+        a = int(rng.uniform(0, 0.2) * SR); L = int(rng.uniform(0.01, 0.04) * SR); tt = np.arange(L) / SR
+        y[a:a + L] += np.sign(np.sin(2 * np.pi * rng.uniform(200, 2000) * tt)) * 0.25
+    return y
+LIB = {"click": click, "glitch": glitch, "whoosh": lambda: whoosh(), "whooshdown": lambda: whoosh(0.4, False), "pop": pop, "tap": tap,
        "impact": impact, "chime": chime, "riser": riser}
 LEAD = {"whoosh": 0.3, "riser": 1.45}   # these peak at the end, so they start early to land on the cue
 

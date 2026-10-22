@@ -1,0 +1,39 @@
+{
+  "title": "Tidy \u2014 data story with voiceover",
+  "out": "out/stats.mp4",
+  "fps": 60,
+  "voice": "en-US-AvaNeural",
+  "rate": "+6%",
+  "pitch": "+0Hz",
+  "lead": 0.7,
+  "tail": 1.8,
+  "snapToBeat": true,
+  "loudness": -14,
+  "music": {
+    "style": "chill",
+    "bpm": 96,
+    "duck_db": -12
+  },
+  "lines": [
+    {
+      "id": "s1",
+      "gap": 0.0,
+      "text": "Teams that switched to Tidy finished forty percent more tasks."
+    },
+    {
+      "id": "s2",
+      "gap": 0.6,
+      "text": "Missed deadlines fell by half."
+    },
+    {
+      "id": "s3",
+      "gap": 0.6,
+      "text": "And ninety-two percent said their week felt calmer."
+    },
+    {
+      "id": "end",
+      "gap": 0.5,
+      "text": "Tidy. Calm, measured."
+    }
+  ]
+}

@@ -1,14 +1,17 @@
 # python3 tools/music.py <project>
 # Builds <project>/music/bed.wav, exactly the film's length (timeline.json DUR):
 #   • if project.json music.file exists: that track from music.start, faded out at the end
-#   • otherwise: an original synth bed at music.bpm (royalty-free by construction — fine for drafts and internal films)
+#   • otherwise: an original synth bed at music.bpm — style "chill" (default) or "drive" (drop at music.drop_bar,
+#     final hit at music.end_bar). Royalty-free by construction.
 import json, os, subprocess, sys
 import numpy as np
 
 proj = sys.argv[1]
 P = json.load(open(os.path.join(proj, "project.json")))
 M = P.get("music", {})
-DUR = json.load(open(os.path.join(proj, "timeline.json")))["DUR"]
+TL = json.load(open(os.path.join(proj, "timeline.json")))
+DUR = TL["DUR"]
+M = {**M, **(TL.get("music") or {})}         # the film may decide e.g. end_bar (KIT.start({ music: { end_bar } }))
 SR = 48000
 N = int(DUR * SR)
 os.makedirs(os.path.join(proj, "music"), exist_ok=True)
@@ -35,11 +38,88 @@ if track and os.path.exists(track):
     print(f"bed.wav ← {M['file']} from {M.get('start', 0)}s, {DUR:.2f}s")
     sys.exit()
 
-# ── synth bed: Am7 – Fmaj7 – C – G, pad + pluck arpeggio + kick/bass/hats, grid starts at t = 0 ──
 bpm = M.get("bpm", 100); beat = 60 / bpm; bar = 4 * beat
 t = np.arange(N) / SR
 rng = np.random.default_rng(3)
 note = lambda m: 440 * 2 ** ((m - 69) / 12)
+
+
+def lowpass(x, fc, order=4):          # FFT low-pass (fast, zero-phase)
+    X = np.fft.rfft(x); f = np.fft.rfftfreq(len(x), 1 / SR)
+    return np.fft.irfft(X / (1 + (f / fc) ** order), len(x))
+
+
+def add(y, at, sig, g=1.0):
+    i = int(at * SR)
+    if i >= len(y): return
+    j = min(len(y), i + len(sig)); y[i:j] += sig[: j - i] * g
+
+
+if M.get("style", "chill") == "drive":
+    # ── drive: four-on-the-floor, Fm–Db–Ab–Eb, filtered intro + riser, drop at drop_bar, end hit at end_bar ──
+    drop, endb = M.get("drop_bar", 2), M.get("end_bar", int(DUR / bar) - 1)
+    prog = [[53, 56, 60], [49, 53, 56], [56, 60, 63], [51, 55, 58]]
+    roots = [41, 37, 44, 39]
+    kick = np.zeros(N); body = np.zeros(N); top = np.zeros(N)
+    def saw(f, L, det=(-0.11, -0.04, 0, 0.05, 0.12)):
+        tt = np.arange(L) / SR
+        return sum(2 * ((f * 2 ** (d / 12) * tt + rng.random()) % 1) - 1 for d in det) / len(det)
+    for b in range(int(DUR / bar) + 1):
+        b0 = b * bar
+        if b > endb: break
+        ch, rt = prog[b % 4], roots[b % 4]
+        if b == endb:                                   # final hit: big chord + boom, rings out
+            L = int(min(3.0, DUR - b0) * SR); tt = np.arange(L) / SR
+            env = np.exp(-tt * 1.4)
+            add(body, b0, sum(saw(note(m + 12), L) for m in ch) * env * 0.22)
+            add(body, b0, np.sin(2 * np.pi * note(rt - 12) * tt) * env * 0.5)
+            add(kick, b0, np.sin(2 * np.pi * np.cumsum(45 + 120 * np.exp(-tt * 25)) / SR) * np.exp(-tt * 3) * 1.0)
+            break
+        L = int(bar * SR); tt = np.arange(L) / SR
+        if b < drop:                                    # intro: soft pad + offbeat hats + riser in the last bar
+            add(body, b0, sum(saw(note(m), L) for m in ch) * np.minimum(1, tt / 0.3) * 0.08)
+            for q in range(8):
+                if q % 2: add(top, b0 + q * beat / 2, rng.standard_normal(int(0.03 * SR)) * np.exp(-np.arange(int(0.03 * SR)) / SR * 120) * 0.1)
+            if b == drop - 1:
+                u = tt / bar
+                add(top, b0, rng.standard_normal(L) * u ** 2 * 0.25)        # noise riser
+                for q in range(16):                                         # snare roll, 16ths, rising
+                    if q >= 8: add(top, b0 + q * beat / 4, rng.standard_normal(int(0.06 * SR)) * np.exp(-np.arange(int(0.06 * SR)) / SR * 50) * (0.1 + 0.25 * q / 16))
+            continue
+        for q in range(4):                              # drop: kick every beat, bass on offbeats, clap on 2 & 4
+            s0 = b0 + q * beat; Lk = int(0.3 * SR); tk = np.arange(Lk) / SR
+            add(kick, s0, np.sin(2 * np.pi * np.cumsum(48 + 130 * np.exp(-tk * 35)) / SR) * np.exp(-tk * 10))
+            Lb = int(beat / 2 * SR); tb = np.arange(Lb) / SR
+            add(body, s0 + beat / 2, saw(note(rt), Lb, (0, 0.08)) * np.exp(-tb * 4) * 0.35)
+            if q % 2:
+                Lc = int(0.15 * SR); tc = np.arange(Lc) / SR
+                add(top, s0, rng.standard_normal(Lc) * (np.exp(-tc * 30) + 0.5 * np.exp(-np.maximum(0, tc - 0.012) * 30) * (tc > 0.012)) * 0.25)
+            for h in range(2):
+                Lh = int((0.09 if h else 0.03) * SR)
+                add(top, s0 + h * beat / 2, rng.standard_normal(Lh) * np.exp(-np.arange(Lh) / SR * (35 if h else 120)) * 0.08)
+        for q in (0, 1.5, 2.5):                          # supersaw stabs
+            Ls = int(beat * 0.45 * SR); ts = np.arange(Ls) / SR
+            add(body, b0 + q * beat, sum(saw(note(m + 12), Ls) for m in ch) * np.exp(-ts * 6) * 0.16)
+    hi = top - lowpass(top, 3000)
+    body = lowpass(body, 4200)
+    # sidechain pump: everything except the kick dips on each beat after the drop
+    ph = (t / beat) % 1
+    pump = np.where(t >= drop * bar, 0.35 + 0.65 * np.minimum(1, ph / 0.45) ** 1.5, 1.0)
+    # intro filter: body opens up toward the drop
+    intro = t < drop * bar
+    body[intro] = lowpass(body, 900)[intro] * 1.4
+    mixd = kick * 0.9 + (body * 1.0 + hi * 1.2) * pump
+    # small room reverb on the non-kick parts
+    ir = rng.standard_normal(int(0.8 * SR)) * np.exp(-np.arange(int(0.8 * SR)) / SR * 6) * 0.02
+    wet = np.fft.irfft(np.fft.rfft(body * pump, N + len(ir)) * np.fft.rfft(ir, N + len(ir)), N + len(ir))[:N]
+    y = mixd + wet
+    y *= np.clip((DUR - t) / 0.5, 0, 1)
+    st = np.stack([y + 0.3 * np.roll(wet, 300), y + 0.3 * np.roll(wet, 700)], 1)
+    save(st / max(1e-6, np.abs(st).max()) * 0.85, out)
+    print(f"bed.wav = drive synth {bpm} BPM, drop bar {drop} ({drop * bar:.2f}s), end hit bar {endb} ({endb * bar:.2f}s)")
+    sys.exit()
+
+# ── chill (default): Am7 – Fmaj7 – C – G, pad + pluck arpeggio + kick/bass/hats, grid starts at t = 0 ──
 prog = [[57, 60, 64, 67], [53, 57, 60, 64], [48, 52, 55, 60], [55, 59, 62, 66]]
 bass = [45, 41, 48, 43]
 y = np.zeros(N)

@@ -1,0 +1,10 @@
+{
+  "title": "Tidy — website promo (music only)",
+  "out": "out/website.mp4",
+  "fps": 60,
+  "lead": 0,
+  "tail": 0,
+  "loudness": -14,
+  "music": { "style": "chill", "bpm": 112 },
+  "lines": []
+}

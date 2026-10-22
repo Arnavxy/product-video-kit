@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- Vertical 9:16 reel (project.json width 1080, height 1920): big kinetic captions, phone full-height,
+     beat-synced punch-ins, confetti on "Done.", final hit on a bar the film picks. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tools/kit.css">
+<style>
+  #stage { background: #0a0a12; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .blob { width: 1400px; height: 1400px; border-radius: 50%; filter: blur(160px); opacity: .55; }
+  .cap { z-index: 10; left: 50%; top: 130px; width: max-content; max-width: 980px; padding: 18px 44px 26px; border-radius: 48px; background: rgba(10,10,18,.86); text-align: center; font-size: 132px; font-weight: 900; letter-spacing: -5px; line-height: .98; }
+  .cap .kit-word { margin: 0 6px; }
+  .rig { left: 540px; top: 1160px; }
+  .rig .kit-phone { position: absolute; left: -195px; top: -422px; }
+  .conf { width: 18px; height: 30px; border-radius: 4px; }
+  .logo { left: 50%; top: 44%; display: flex; align-items: center; gap: 30px; font-size: 170px; font-weight: 900; letter-spacing: -6px; }
+  .logo .m { width: 160px; height: 160px; border-radius: 46px; background: #2fd08a; position: relative; }
+  .logo .m::after { content: ""; position: absolute; left: 56px; top: 27px; width: 36px; height: 76px; border: solid #fff; border-width: 0 17px 17px 0; transform: rotate(45deg); }
+  .cta { left: 50%; top: 1130px; padding: 30px 60px; border-radius: 99px; background: #fff; color: #0a0a12; font-size: 58px; font-weight: 800; letter-spacing: -1.5px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="data.js"></script>
+<script src="clip.js"></script>
+<script src="../../../tools/engine.js"></script>
+<script src="film.js"></script>
+</body>
+</html>

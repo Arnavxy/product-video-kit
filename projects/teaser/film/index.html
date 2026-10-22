@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- Music-only teaser: every change lands on a beat of the generated "drive" track (128 BPM, drop at bar 2). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tools/kit.css">
+<style>
+  :root { --bg: #08080c; --ink: #f4f2ee; }
+  #stage { background: radial-gradient(1200px 800px at 50% 55%, #17172a 0%, var(--bg) 70%); color: var(--ink);
+           font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .word { left: 0; right: 0; top: 50%; text-align: center; font-size: 230px; font-weight: 900; letter-spacing: -10px; line-height: 1; }
+  .flash { inset: 0; background: #fff; }
+  .ring { left: 50%; top: 50%; width: 200px; height: 200px; margin: -100px; border-radius: 50%; border: 10px solid #fff; }
+  .scene { inset: 0; perspective: 1500px; }
+  .world { position: absolute; left: 58%; top: 50%; transform-style: preserve-3d; }
+  .card { position: absolute; width: 420px; padding: 26px 28px; border-radius: 26px; background: rgba(255,255,255,.96); color: #17151f;
+          box-shadow: 0 40px 80px rgba(0,0,0,.45); font-size: 26px; font-weight: 600; backface-visibility: hidden; }
+  .card .row { display: flex; align-items: center; gap: 16px; margin: 10px 0; }
+  .card .ck { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #c8c4d8; flex: none; position: relative; }
+  .card .ck.on { background: var(--c, #2fd08a); border-color: var(--c, #2fd08a); }
+  .card .ck.on::after { content: ""; position: absolute; left: 10px; top: 4px; width: 9px; height: 17px; border: solid #fff; border-width: 0 4px 4px 0; transform: rotate(45deg); }
+  .card .muted { color: #8d89a0; font-size: 20px; font-weight: 500; }
+  .card .bar { height: 14px; border-radius: 9px; background: #ebe8f3; overflow: hidden; margin-top: 14px; }
+  .card .bar i { display: block; height: 100%; width: 0; background: var(--c, #2fd08a); }
+  .card .big { font-size: 64px; font-weight: 850; letter-spacing: -2px; }
+  .side { left: 120px; z-index: 5; text-shadow: 0 10px 40px rgba(0,0,0,.6); top: 50%; font-size: 150px; font-weight: 900; letter-spacing: -6px; }
+  .logo { left: 50%; top: 50%; display: flex; align-items: center; gap: 36px; font-size: 200px; font-weight: 900; letter-spacing: -8px; }
+  .logo .mark { width: 190px; height: 190px; border-radius: 56px; background: #2fd08a; position: relative; flex: none; }
+  .logo .mark::after { content: ""; position: absolute; left: 66px; top: 32px; width: 44px; height: 92px; border: solid #fff; border-width: 0 20px 20px 0; transform: rotate(45deg); border-radius: 4px; }
+  .tag { left: 0; right: 0; top: 700px; text-align: center; font-size: 56px; font-weight: 600; color: #9a97ad; letter-spacing: -1px; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="data.js"></script>
+<script src="../../../tools/engine.js"></script>
+<script src="film.js"></script>
+</body>
+</html>

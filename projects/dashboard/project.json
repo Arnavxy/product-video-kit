@@ -1,0 +1,39 @@
+{
+  "title": "Tidy for Teams \u2014 desktop walkthrough",
+  "out": "out/dashboard.mp4",
+  "fps": 60,
+  "voice": "en-US-AndrewNeural",
+  "rate": "+4%",
+  "pitch": "+0Hz",
+  "lead": 0.6,
+  "tail": 2.2,
+  "snapToBeat": true,
+  "loudness": -14,
+  "music": {
+    "style": "chill",
+    "bpm": 104,
+    "duck_db": -11
+  },
+  "lines": [
+    {
+      "id": "d1",
+      "gap": 0.0,
+      "text": "Every project your team runs, on one calm dashboard."
+    },
+    {
+      "id": "d2",
+      "gap": 0.5,
+      "text": "Filter by team in a single click."
+    },
+    {
+      "id": "d3",
+      "gap": 0.5,
+      "text": "And spot what's at risk, before it slips."
+    },
+    {
+      "id": "end",
+      "gap": 1.0,
+      "text": "Tidy for Teams."
+    }
+  ]
+}

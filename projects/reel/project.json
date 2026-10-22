@@ -1,0 +1,42 @@
+{
+  "title": "Tidy \u2014 vertical 9:16 reel",
+  "out": "out/reel.mp4",
+  "width": 1080,
+  "height": 1920,
+  "fps": 60,
+  "voice": "en-US-AvaNeural",
+  "rate": "+10%",
+  "pitch": "+2Hz",
+  "lead": 0.3,
+  "tail": 3.0,
+  "snapToBeat": true,
+  "loudness": -14,
+  "music": {
+    "style": "drive",
+    "bpm": 120,
+    "drop_bar": 1,
+    "duck_db": -8
+  },
+  "lines": [
+    {
+      "id": "r1",
+      "gap": 0.0,
+      "text": "Your to-do list. But calm."
+    },
+    {
+      "id": "r2",
+      "gap": 0.4,
+      "text": "Add it."
+    },
+    {
+      "id": "r3",
+      "gap": 1.4,
+      "text": "Tick it."
+    },
+    {
+      "id": "r4",
+      "gap": 1.0,
+      "text": "Done."
+    }
+  ]
+}

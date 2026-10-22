@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- Website promo: a 3D browser scrolls the captured page, elements pop out toward the camera, then a tilted
+     flyover of the whole page. All motion on the music grid (chill bed, 112 BPM). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tools/kit.css">
+<style>
+  #stage { background: linear-gradient(160deg, #eef7f1 0%, #f3efff 55%, #fff6ec 100%); font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; color: #18161f; }
+  .cam { inset: 0; perspective: 2200px; perspective-origin: 50% 40%; }
+  .rig { position: absolute; left: 50%; top: 50%; width: 1440px; height: 952px; margin: -476px 0 0 -720px; transform-style: preserve-3d; }
+  .page { position: absolute; left: 0; top: 0; width: 1440px; }
+  .pop { position: absolute; transform-origin: 50% 50%; border-radius: 26px; }
+  .wall { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; }
+  .wall img { position: absolute; width: 1440px; left: -720px; border-radius: 28px; box-shadow: 0 60px 140px rgba(40,30,80,.35); }
+  .end { inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; }
+  .end .logo { display: flex; align-items: center; gap: 28px; font-size: 150px; font-weight: 850; letter-spacing: -6px; }
+  .end .m { width: 140px; height: 140px; border-radius: 40px; background: #2fa36f; position: relative; }
+  .end .m::after { content: ""; position: absolute; left: 49px; top: 24px; width: 32px; height: 66px; border: solid #fff; border-width: 0 15px 15px 0; transform: rotate(45deg); }
+  .end .url { font-size: 40px; font-weight: 700; padding: 18px 40px; border-radius: 99px; background: #18161f; color: #fff; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="data.js"></script>
+<script src="site.js"></script>   <!-- record.mjs: page size, pop-out positions, section offsets -->
+<script src="../../../tools/engine.js"></script>
+<script src="film.js"></script>
+</body>
+</html>

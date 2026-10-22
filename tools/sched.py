@@ -5,7 +5,8 @@ import json, math, os, sys
 
 proj = sys.argv[1]
 P = json.load(open(os.path.join(proj, "project.json")))
-L = json.load(open(os.path.join(proj, "vo/lines.json")))
+lp = os.path.join(proj, "vo/lines.json")
+L = json.load(open(lp)) if os.path.exists(lp) else {}
 M = P.get("music", {})
 
 grid_path = os.path.join(proj, "music/grid.json")
@@ -36,7 +37,8 @@ for ln in P["lines"]:
                "text": ln["text"], "words": [{"w": x["w"], "t": round(at + x["t"], 3), "d": x["d"]} for x in w]}
     t = vo[lid]["end"]
 speech_end = t
-data = {"PROJECT": {k: P[k] for k in ("title", "fps", "lead", "tail") if k in P}, "VO": vo, "MUSIC": music}
+music.update({k: M[k] for k in ("drop_bar", "end_bar", "style") if k in M})
+data = {"PROJECT": {k: P[k] for k in ("title", "fps", "lead", "tail", "width", "height") if k in P}, "VO": vo, "MUSIC": music}
 data["PROJECT"]["speechEnd"] = round(speech_end, 3)
 with open(os.path.join(proj, "film/data.js"), "w") as f:
     for k, v in data.items():

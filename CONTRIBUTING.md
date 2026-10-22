@@ -20,7 +20,7 @@ Thanks for helping! Bug reports, new engine components and better defaults are a
 Describe what you changed and attach a still or short clip if it affects the picture or sound.
 
 ## Ideas we'd love help with
-- More engine components: browser-window frame, desktop cursor, chart/number counters, split screens.
-- Music section detection (find the drop automatically) and bar-aligned cuts for shortening tracks.
-- Vertical (9:16) output preset for Reels/Shorts.
-- Windows setup.
+- More engine components: split screens, device frames (tablet, laptop), text-on-path, particle presets.
+- Music section detection (find the drop in a real track automatically) and bar-aligned cuts for shortening tracks.
+- More soundtrack styles in `tools/music.py`.
+- Native Windows support (PowerShell versions of `setup.sh` / `video.sh`), and reports from WSL users.

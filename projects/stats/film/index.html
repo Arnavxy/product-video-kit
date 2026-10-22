@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- Data story: each chart animates on the exact word that says its number (W('s1','forty')), with karaoke subtitles. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tools/kit.css">
+<style>
+  :root { --bg: #0d0f1a; --ink: #f2f1f7; --mut: #8b8aa3; --g: #45e0a0; --v: #9b7bff; --o: #ff9a4d; }
+  #stage { background: radial-gradient(1400px 900px at 70% 30%, #1b1e3a 0%, var(--bg) 65%); color: var(--ink);
+           font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .panel { left: 0; top: 0; width: 1920px; height: 1080px; }
+  .num { position: absolute; left: 150px; top: 250px; font-size: 230px; font-weight: 850; letter-spacing: -10px; line-height: 1; }
+  .lbl { position: absolute; left: 160px; top: 560px; width: 620px; font-size: 52px; font-weight: 650; letter-spacing: -1.5px; line-height: 1.12; color: var(--ink); }
+  .lbl span { color: var(--mut); }
+  .chart { position: absolute !important; left: 940px; top: 190px; width: 840px; height: 600px; }
+  .bars { display: flex; align-items: flex-end; gap: 22px; border-bottom: 2px solid #2c2f4f; }
+  .bars div { flex: 1; border-radius: 14px 14px 4px 4px; background: #34385e; transform-origin: 50% 100%; position: relative; }
+  .bars div.after { background: linear-gradient(180deg, var(--g), #1fa873); box-shadow: 0 0 40px rgba(69,224,160,.35); }
+  .legend { position: absolute; left: 940px; top: 820px; font-size: 26px; color: var(--mut); display: flex; gap: 40px; }
+  .legend i { display: inline-block; width: 18px; height: 18px; border-radius: 5px; margin-right: 10px; vertical-align: -2px; }
+  svg text { font: 600 24px -apple-system, "Helvetica Neue", Arial, sans-serif; fill: var(--mut); }
+  .tag { right: 50px; top: 40px; font-size: 22px; color: #6d6c88; padding: 8px 16px; border: 1px solid #2c2f4f; border-radius: 99px; }
+  .logo { left: 50%; top: 46%; display: flex; align-items: center; gap: 30px; font-size: 150px; font-weight: 850; letter-spacing: -6px; }
+  .logo .m { width: 140px; height: 140px; border-radius: 40px; background: var(--g); position: relative; }
+  .logo .m::after { content: ""; position: absolute; left: 49px; top: 24px; width: 32px; height: 66px; border: solid #0d0f1a; border-width: 0 15px 15px 0; transform: rotate(45deg); }
+  .etag { left: 0; right: 0; top: 640px; text-align: center; font-size: 52px; font-weight: 600; color: var(--mut); letter-spacing: -1px; }
+  .kit-subrow { background: rgba(255,255,255,.08); color: rgba(255,255,255,.4); backdrop-filter: blur(8px); font-size: 36px; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="data.js"></script>
+<script src="../../../tools/engine.js"></script>
+<script src="film.js"></script>
+</body>
+</html>

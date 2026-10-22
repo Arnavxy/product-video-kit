@@ -70,7 +70,10 @@
   };
 
   // ── DOM helpers ──────────────────────────────────────────────────────────
+  K.W_ = (window.PROJECT && window.PROJECT.width) || 1920;      // frame size (project.json width/height)
+  K.H_ = (window.PROJECT && window.PROJECT.height) || 1080;
   K.stage = document.getElementById('stage');
+  for (const e of [document.documentElement, document.body]) { e.style.width = K.W_ + 'px'; e.style.height = K.H_ + 'px'; }
   K.el = (tag, cls, parent = K.stage, html = '') => {
     const e = document.createElement(tag); if (cls) e.className = cls; if (html) e.innerHTML = html;
     parent.appendChild(e); return e;
@@ -110,7 +113,17 @@
     };
     const mark = (name) => { if (!(name in C.marks)) throw new Error('no clip mark ' + name); return C.marks[name]; };
     const tap = (name) => { const x = C.taps.find((q) => q.name === name); if (!x) throw new Error('no clip tap ' + name); return x; };
-    return { C, clipAt, filmAt, frameAt, mark, tap, speeds, taps: C.taps.map((q) => ({ ...q, ft: filmAt(q.t) })) };
+    // recorded pointer path (record.mjs logs C.moves = [{t, x, y}]) → position at clip time, eased between samples
+    const pointerAt = (ct) => {
+      const M = C.moves || []; if (!M.length) return null;
+      if (ct <= M[0].t) return M[0];
+      for (let i = 1; i < M.length; i++) if (ct <= M[i].t) {
+        const a = M[i - 1], b = M[i], p = K.E.inOut((ct - a.t) / (b.t - a.t || 1));
+        return { x: K.lerp(a.x, b.x, p), y: K.lerp(a.y, b.y, p) };
+      }
+      return M[M.length - 1];
+    };
+    return { C, clipAt, filmAt, frameAt, mark, tap, speeds, pointerAt, taps: C.taps.map((q) => ({ ...q, ft: filmAt(q.t) })) };
   };
 
   // ── phone mock-up showing a clip, with a camera ─────────────────────────
@@ -183,15 +196,54 @@
     };
   };
 
+  // ── browser window mock-up: K.browser({ w, h, url }) → { root, view, img } (view = the page area, h tall) ──
+  K.browser = ({ w = 1440, h = 900, url = 'example.com', parent = K.stage } = {}) => {
+    const root = K.el('div', 'kit-browser', parent); K.css(root, { width: w + 'px', height: h + 52 + 'px' });
+    const ch = K.el('div', 'kit-chrome', root, '<i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>');
+    const u = K.el('div', 'kit-url', ch); u.textContent = '🔒  ' + url;
+    const view = K.el('div', 'kit-bview', root); K.css(view, { width: w + 'px', height: h + 'px' });
+    return { root, view, url: u };
+  };
+
+  // ── mouse cursor: K.cursor(parent) → .set(x, y, pressed 0..1) ──
+  K.cursor = (parent = K.stage) => {
+    const c = K.el('div', 'kit-cursor', parent,
+      '<svg viewBox="0 0 24 24" width="34" height="34"><path d="M4 2 L4 19 L8.6 14.8 L11.6 21.6 L14.5 20.4 L11.6 13.7 L17.8 13.7 Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>');
+    return { el: c, set(x, y, down = 0, op = 1) { c.style.transform = `translate(${x - 6}px, ${y - 3}px) scale(${1 - 0.15 * down})`; K.show(c, op); } };
+  };
+
+  // ── magnifier bubble: a round lens showing part of an image enlarged ──
+  // m = K.magnifier(parent, size) ; m.set(src, srcW, srcH, cx, cy, zoom, x, y, opacity)
+  // shows the point (cx, cy) of the source (in source px of a srcW×srcH image) at `zoom`, lens centred at (x, y)
+  K.magnifier = (parent = K.stage, size = 320) => {
+    const m = K.el('div', 'kit-mag', parent); K.css(m, { width: size + 'px', height: size + 'px' });
+    const im = K.el('img', '', m);
+    return {
+      el: m,
+      set(src, sw, sh, cx, cy, zoom, x, y, op = 1) {
+        K.img(im, src);
+        K.css(im, { width: sw + 'px', height: sh + 'px', transform: `translate(${size / 2 - cx * zoom}px, ${size / 2 - cy * zoom}px) scale(${zoom})` });
+        m.style.left = x - size / 2 + 'px'; m.style.top = y - size / 2 + 'px';
+        m.style.transform = `scale(${0.3 + 0.7 * K.E.outBack(op)})`; K.show(m, op);
+      },
+    };
+  };
+
+  // ── number that counts up: K.count(el, to, t0, t1, fmt) → .set(t) ──
+  K.count = (el, to, t0, t1, fmt = (v) => Math.round(v).toLocaleString('en-US'), from = 0) => ({
+    set(t) { el.textContent = fmt(K.lerp(from, to, K.E.outExpo(K.seg(t, t0, t1)))); },
+  });
+
   // ── SFX cues: registered once at load, exported to timeline.json for tools/mix.py ──
-  // kinds: whoosh, whooshdown, pop, tap, impact, chime, riser
+  // kinds: whoosh, whooshdown, pop, tap, click, impact, chime, riser, glitch
   const cues = [];
   K.cue = (t, kind, gain = 1) => { cues.push({ t: +t.toFixed(3), kind, gain }); };
 
   // ── start ───────────────────────────────────────────────────────────────
-  // K.start({ dur, render(t) }) — exposes window.render / window.FILM / window.READY for tools/render.mjs
-  K.start = ({ dur, render }) => {
-    window.FILM = { DUR: +dur.toFixed(3), FPS: (window.PROJECT && window.PROJECT.fps) || 60, cues: cues.sort((a, b) => a.t - b.t), VO: window.VO, MUSIC: MU };
+  // K.start({ dur, render(t), music }) — exposes window.render / window.FILM / window.READY for tools/render.mjs.
+  // music: overrides for the generated soundtrack decided by the edit, e.g. { end_bar: 5 } puts the final hit there.
+  K.start = ({ dur, render, music = {} }) => {
+    window.FILM = { DUR: +dur.toFixed(3), FPS: (window.PROJECT && window.PROJECT.fps) || 60, cues: cues.sort((a, b) => a.t - b.t), VO: window.VO, MUSIC: MU, music };
     window.render = async (t) => {
       render(t);
       while (pending.length) await pending.shift();

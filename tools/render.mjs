@@ -1,8 +1,9 @@
 // node tools/render.mjs <project> <mode>
 //   info                 → <project>/timeline.json (duration, VO, SFX cues) — mix.py reads it
-//   stills 1.2,8.5,...   → <project>/stills/t<time>.jpg   (check moments before a full render)
+//   stills 1.2,8.5,...     → <project>/stills/t<time>.jpg   (check moments before a full render)
 //   frames [from] [to]   → <project>/frames/f%05d.jpg      (PAGES browser pages in parallel, default 4)
 //   encode               → <project>/<project.json "out">  (frames + mix.wav, H.264 + AAC)
+// Frame size: project.json width/height (default 1920×1080; 1080×1920 for vertical).
 // Env: PAGES=6 (more = faster, more RAM), FPS (default project.json fps or 60), BROWSER=chrome|chromium
 import fs from "node:fs";
 import path from "node:path";
@@ -15,13 +16,14 @@ const DIR = path.resolve(proj);
 const P = JSON.parse(fs.readFileSync(path.join(DIR, "project.json"), "utf8"));
 const FPS = Number(process.env.FPS || P.fps || 60);
 const N = Number(process.env.PAGES || 4);
+const WIDTH = P.width || 1920, HEIGHT = P.height || 1080;
 
 async function openPages(n) {
   const browser = await launch(["--force-device-scale-factor=1", "--allow-file-access-from-files"]);
   const pages = [];
   let errors = 0;
   for (let i = 0; i < n; i++) {
-    const p = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+    const p = await browser.newPage({ viewport: { width: WIDTH, height: HEIGHT }, deviceScaleFactor: 1 });
     p.on("pageerror", (e) => { errors++; console.error("PAGE ERROR:", e.message); });
     p.on("console", (m) => { if (m.type() === "error") { errors++; console.error("CONSOLE ERROR:", m.text()); } });
     await p.goto("file://" + path.join(DIR, "film/index.html"));
