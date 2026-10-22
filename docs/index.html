@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product Video Kit — sample films</title>
+<style>
+  :root { --bg: #f7f6f2; --ink: #18161f; --mut: #6b677d; --card: #fff; --line: #e7e4dc; --acc: #2fa36f; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0e0e14; --ink: #f2f1f7; --mut: #9b98ad; --card: #17171f; --line: #2a2a36; } }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font: 17px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 48px 16px 80px; }
+  main { max-width: 1180px; margin: 0 auto; }
+  h1 { font-size: clamp(32px, 5vw, 52px); letter-spacing: -1.5px; line-height: 1.05; }
+  .lead { color: var(--mut); margin: 14px 0 36px; max-width: 720px; }
+  .lead a, footer a { color: var(--acc); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 22px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  video { display: block; width: 100%; background: #000; }
+  .card.v video { max-height: 560px; object-fit: contain; }
+  .meta { padding: 16px 18px 20px; }
+  .meta h2 { font-size: 20px; letter-spacing: -.4px; }
+  .meta small { color: var(--mut); font-weight: 600; }
+  .meta p { color: var(--mut); font-size: 15px; margin-top: 6px; }
+  code { font-size: 13px; background: var(--line); padding: 2px 6px; border-radius: 6px; }
+  footer { margin-top: 40px; color: var(--mut); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Sample films</h1>
+  <p class="lead">Every film here was made from code with <a href="https://github.com/Arnavxy/product-video-kit">Product Video Kit</a>:
+  scripted screen recordings, neural voiceover, beat-synced edits, rendered in headless Chrome. Turn the sound on.
+  Every product, person and number is fictional.</p>
+  <div class="grid">
+    <div class="card" id="teaser"><video src="samples/teaser.mp4" controls playsinline preload="metadata"></video>
+      <div class="meta"><h2>Launch teaser</h2><small>13 s · music only</small><p>Kinetic type on every beat, a 3D card field pumping with the kick, glitch logo on the final hit. <code>projects/teaser</code></p></div></div>
+    <div class="card" id="website"><video src="samples/website.mp4" controls playsinline preload="metadata"></video>
+      <div class="meta"><h2>Website promo</h2><small>15 s · music only</small><p>3D browser scroll, sections lifting out on the beat, a fly-over of the whole page. <code>projects/website</code></p></div></div>
+    <div class="card" id="stats"><video src="samples/stats.mp4" controls playsinline preload="metadata"></video>
+      <div class="meta"><h2>Data story</h2><small>15 s · voiceover</small><p>Counters and charts that land on the exact spoken number, with karaoke subtitles. <code>projects/stats</code></p></div></div>
+    <div class="card" id="dashboard"><video src="samples/dashboard.mp4" controls playsinline preload="metadata"></video>
+      <div class="meta"><h2>Desktop walkthrough</h2><small>14 s · voiceover</small><p>Recorded web app, a cursor that follows the recorded mouse, punch-ins and a magnifier lens. <code>projects/dashboard</code></p></div></div>
+    <div class="card" id="example"><video src="samples/example.mp4" controls playsinline preload="metadata"></video>
+      <div class="meta"><h2>App walkthrough</h2><small>23 s · voiceover</small><p>The starter project: a phone take re-timed so each tap lands on its word. <code>projects/example</code></p></div></div>
+    <div class="card v" id="reel"><video src="samples/reel.mp4" controls playsinline preload="metadata"></video>
+      <div class="meta"><h2>Vertical reel (9:16)</h2><small>10 s · voiceover</small><p>1080×1920 for Reels, Shorts and TikTok. Beat-synced zooms, confetti on “Done.” <code>projects/reel</code></p></div></div>
+  </div>
+  <footer>MIT licensed · <a href="https://github.com/Arnavxy/product-video-kit">github.com/Arnavxy/product-video-kit</a></footer>
+</main>
+</body>
+</html>

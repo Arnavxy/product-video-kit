@@ -24,19 +24,20 @@ git clone https://github.com/Arnavxy/product-video-kit && cd product-video-kit
 
 Six films, all made with this kit and all in [`projects/`](projects/), so you can rebuild any of them
 with `./video.sh all <name>`. Every product, person and number in them is fictional. The previews are
-silent GIFs: click **▶ with sound** to watch the real mp4.
+silent GIFs. To watch the real mp4s with sound, open the
+**[sample gallery ▶](https://arnavxy.github.io/product-video-kit/)** or click **▶ with sound** under any film.
 
 <table>
 <tr>
 <td width="50%" valign="top">
 <img src="docs/samples/teaser.gif" alt="Beat-synced teaser: words slam in on each beat, a 3D field of app cards orbits, glitch logo">
-<b>Launch teaser</b> · 13 s · music only · <a href="docs/samples/teaser.mp4">▶ with sound</a><br>
+<b>Launch teaser</b> · 13 s · music only · <a href="https://arnavxy.github.io/product-video-kit/#teaser">▶ with sound</a><br>
 Kinetic type on every beat, a white flash on the drop, a 3D field of UI cards pumping with the kick,
 and an RGB-glitch logo on the final hit. Original synth track. <code>projects/teaser</code>
 </td>
 <td width="50%" valign="top">
 <img src="docs/samples/website.gif" alt="Website promo: a 3D browser scrolls a landing page, sections pop out toward the camera, then a tilted fly-over">
-<b>Website promo</b> · 15 s · music only · <a href="docs/samples/website.mp4">▶ with sound</a><br>
+<b>Website promo</b> · 15 s · music only · <a href="https://arnavxy.github.io/product-video-kit/#website">▶ with sound</a><br>
 Captures a landing page, then scrolls it in a 3D browser. Cards and pricing lift out of the page on the
 beat, then the camera flies over the whole page. <code>projects/website</code>
 </td>
@@ -44,13 +45,13 @@ beat, then the camera flies over the whole page. <code>projects/website</code>
 <tr>
 <td valign="top">
 <img src="docs/samples/stats.gif" alt="Data story: bar chart, line chart and donut animate as the voice says each number">
-<b>Data story</b> · 15 s · voiceover · <a href="docs/samples/stats.mp4">▶ with sound</a><br>
+<b>Data story</b> · 15 s · voiceover · <a href="https://arnavxy.github.io/product-video-kit/#stats">▶ with sound</a><br>
 Counters, a bar chart, a self-drawing line chart and a donut, each landing on the exact spoken number
 ("<i>forty</i> percent", "by <i>half</i>"). Karaoke subtitles. Labelled as illustrative data. <code>projects/stats</code>
 </td>
 <td valign="top">
 <img src="docs/samples/dashboard.gif" alt="Desktop walkthrough: a SaaS dashboard in a browser, a cursor clicks filters, camera punches in, a magnifier lens">
-<b>Desktop walkthrough</b> · 14 s · voiceover · <a href="docs/samples/dashboard.mp4">▶ with sound</a><br>
+<b>Desktop walkthrough</b> · 14 s · voiceover · <a href="https://arnavxy.github.io/product-video-kit/#dashboard">▶ with sound</a><br>
 A recorded web app in a browser window, with a drawn cursor following the recorded mouse path,
 click ripples and camera punch-ins. A magnifier lens opens on "<i>before it slips</i>". <code>projects/dashboard</code>
 </td>
@@ -58,13 +59,13 @@ click ripples and camera punch-ins. A magnifier lens opens on "<i>before it slip
 <tr>
 <td valign="top">
 <img src="docs/samples/example.gif" alt="App walkthrough: phone mock-up of a to-do app with captions and subtitles">
-<b>App walkthrough</b> · 23 s · voiceover · <a href="docs/samples/example.mp4">▶ with sound</a><br>
+<b>App walkthrough</b> · 23 s · voiceover · <a href="https://arnavxy.github.io/product-video-kit/#example">▶ with sound</a><br>
 The starter project. A phone take re-timed so each tap lands on its word, with a punch-in while typing,
 feature captions and an end card. <code>projects/example</code>
 </td>
 <td valign="top" align="center">
 <img src="docs/samples/reel.gif" width="270" alt="Vertical 9:16 reel: big captions, phone, confetti on Done">
-<br><b>Vertical reel (9:16)</b> · 10 s · voiceover · <a href="docs/samples/reel.mp4">▶ with sound</a><br>
+<br><b>Vertical reel (9:16)</b> · 10 s · voiceover · <a href="https://arnavxy.github.io/product-video-kit/#reel">▶ with sound</a><br>
 1080×1920 for Reels, Shorts and TikTok. One-word captions, beat-synced zooms, confetti on "<i>Done.</i>",
 and a final hit on the bar the edit picks. <code>projects/reel</code>
 </td>
