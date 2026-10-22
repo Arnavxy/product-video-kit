@@ -1,0 +1,32 @@
+<!doctype html>
+<!-- The director page. tools/render.mjs opens this at 1920×1080 and screenshots render(t) for every frame.
+     Preview in a browser: open film/index.html#12.5 (a moment) or #play (rough real-time playback). -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tools/kit.css">
+<style>
+  /* project look — change these */
+  :root { --bg: #f6f4ef; --ink: #1d1b16; --muted: #8a8478; --accent: #2f9e6b; }
+  body { background: var(--bg); }
+  #stage { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .big { position: absolute; left: 160px; right: 160px; top: 50%; transform: translateY(-50%); text-align: center;
+         font-size: 104px; font-weight: 700; letter-spacing: -3px; line-height: 1.08; }
+  .logo { position: absolute; left: 50%; top: 50%; display: flex; align-items: center; gap: 30px; font-size: 150px; font-weight: 800; letter-spacing: -5px; }
+  .mark { width: 150px; height: 150px; border-radius: 44px; background: var(--accent); position: relative; }
+  .mark::after { content: ""; position: absolute; left: 52px; top: 26px; width: 34px; height: 70px; border: solid #fff; border-width: 0 16px 16px 0; transform: rotate(45deg); border-radius: 4px; }
+  .cap { position: absolute; left: 190px; top: 380px; width: 720px; }
+  .cap .n { font-size: 26px; font-weight: 700; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
+  .cap .h { font-size: 78px; font-weight: 750; letter-spacing: -2.5px; line-height: 1.04; margin-top: 18px; }
+  .cap .s { font-size: 34px; color: var(--muted); margin-top: 22px; line-height: 1.3; }
+  .tag { position: absolute; left: 0; right: 0; top: 640px; text-align: center; font-size: 54px; font-weight: 600; color: var(--muted); letter-spacing: -1px; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="data.js"></script>   <!-- tools/sched.py: PROJECT, VO, MUSIC -->
+<script src="clip.js"></script>   <!-- record.mjs: CLIP -->
+<script src="../../../tools/engine.js"></script>
+<script src="film.js"></script>
+</body>
+</html>

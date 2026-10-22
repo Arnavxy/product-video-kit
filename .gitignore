@@ -1,0 +1,19 @@
+node_modules/
+bun.lock*
+package-lock.json
+.DS_Store
+# generated per project — rebuild with ./video.sh
+projects/*/clips/
+projects/*/frames/
+projects/*/stills/
+projects/*/vo/
+projects/*/out/
+projects/*/mix.wav
+projects/*/timeline.json
+projects/*/music/bed.wav
+projects/*/music/grid.json
+projects/*/music/*.mp3
+projects/*/music/*.wav
+projects/*/film/data.js
+projects/*/film/clip.js
+projects/*/assets/

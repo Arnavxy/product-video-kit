@@ -1,0 +1,81 @@
+<!doctype html>
+<!-- A tiny fake app for the example film. Replace it with your real product: point record.mjs at your
+     dev server / staging URL instead. Fictional brand "Tidy" — nothing real here. -->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidy</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font: 16px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f6f4ef; color: #1d1b16; }
+  header { padding: 22px 20px 10px; }
+  h1 { font-size: 30px; letter-spacing: -0.5px; }
+  .sub { color: #8a8478; font-size: 14px; margin-top: 2px; }
+  .bar { height: 8px; background: #e7e2d6; border-radius: 99px; margin: 14px 20px 6px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: #2f9e6b; border-radius: 99px; transition: width .5s cubic-bezier(.2,.8,.2,1); }
+  .count { padding: 0 20px; font-size: 13px; color: #6b665b; }
+  ul { list-style: none; padding: 12px 14px; }
+  li { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 14px; padding: 14px; margin-bottom: 10px;
+       box-shadow: 0 1px 2px rgba(0,0,0,.05); transition: opacity .3s, transform .35s cubic-bezier(.2,.8,.2,1); }
+  li.new { animation: pop .45s cubic-bezier(.2,.9,.3,1.3); }
+  @keyframes pop { from { transform: scale(.85); opacity: 0; } }
+  .chk { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #c9c2b3; flex: none; display: grid; place-items: center; transition: all .25s; }
+  li.done .chk { background: #2f9e6b; border-color: #2f9e6b; }
+  li.done .chk::after { content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) translate(-1px,-1px); }
+  li.done span { color: #a39d90; text-decoration: line-through; }
+  .tag { margin-left: auto; font-size: 12px; padding: 3px 8px; border-radius: 99px; background: #fdecd8; color: #b8641d; }
+  form { position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 8px; padding: 12px 14px 22px; background: #f6f4ef; }
+  input { flex: 1; border: 0; border-radius: 12px; padding: 14px; font: inherit; background: #fff; outline: 2px solid transparent; }
+  input:focus { outline-color: #2f9e6b; }
+  button { border: 0; border-radius: 12px; padding: 0 18px; font: 600 15px inherit; font-family: inherit; background: #1d1b16; color: #fff; }
+  .toast { position: fixed; left: 50%; top: 18px; transform: translate(-50%, -80px); background: #1d1b16; color: #fff; padding: 10px 16px;
+           border-radius: 99px; font-size: 14px; transition: transform .45s cubic-bezier(.2,.9,.3,1.2); white-space: nowrap; }
+  .toast.on { transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<header><h1>Today</h1><div class="sub">Thursday · 5 things</div></header>
+<div class="bar"><i id="bar"></i></div>
+<div class="count" id="count"></div>
+<ul id="list"></ul>
+<form id="f"><input id="inp" aria-label="New task" placeholder="Add a task…" autocomplete="off"><button aria-label="Add">Add</button></form>
+<div class="toast" id="toast">🎉 All done for today</div>
+<script>
+  const items = [
+    { t: "Reply to Sam's email", tag: "Work" },
+    { t: "Book dentist appointment" },
+    { t: "Buy groceries", tag: "Home" },
+    { t: "Water the plants" },
+  ];
+  const list = document.getElementById("list");
+  function render() {
+    list.innerHTML = "";
+    items.forEach((it, i) => {
+      const li = document.createElement("li");
+      li.className = (it.done ? "done " : "") + (it.isNew ? "new" : "");
+      li.dataset.i = i;
+      li.innerHTML = `<div class="chk"></div><span></span>${it.tag ? `<em class="tag">${it.tag}</em>` : ""}`;
+      li.querySelector("span").textContent = it.t;
+      li.onclick = () => { it.done = !it.done; it.isNew = false; render(); };
+      list.appendChild(li);
+      it.isNew = false;
+    });
+    const d = items.filter((x) => x.done).length;
+    document.getElementById("bar").style.width = (100 * d / items.length) + "%";
+    document.getElementById("count").textContent = `${d} of ${items.length} done`;
+    document.getElementById("toast").classList.toggle("on", d === items.length);
+  }
+  document.getElementById("f").onsubmit = (e) => {
+    e.preventDefault();
+    const v = document.getElementById("inp").value.trim();
+    if (!v) return;
+    items.push({ t: v, isNew: true });
+    document.getElementById("inp").value = "";
+    document.getElementById("inp").blur();
+    render();
+  };
+  render();
+</script>
+</body>
+</html>

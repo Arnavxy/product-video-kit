@@ -1,0 +1,27 @@
+{
+  "title": "Tidy — example product film",
+  "out": "out/tidy-example.mp4",
+  "fps": 60,
+  "voice": "en-US-AndrewNeural",
+  "rate": "+4%",
+  "pitch": "+0Hz",
+  "lead": 0.8,
+  "tail": 3.2,
+  "snapToBeat": true,
+  "loudness": -14,
+  "music": {
+    "file": "music/track.mp3",
+    "start": 0,
+    "bpm": 100,
+    "duck_db": -10
+  },
+  "lines": [
+    { "id": "hook",  "gap": 0.0, "text": "Your to-do list shouldn't feel like a second job." },
+    { "id": "intro", "gap": 0.7, "text": "Meet Tidy." },
+    { "id": "add",   "gap": 1.4, "text": "Add a task in one tap. Type it, and it's on your list." },
+    { "id": "tick",  "gap": 0.8, "text": "Tick things off as you go, and watch your day fill up." },
+    { "id": "done",  "gap": 0.6, "text": "Finish everything, and Tidy celebrates with you." },
+    { "id": "end",   "gap": 1.2, "text": "Tidy." },
+    { "id": "tag",   "gap": 0.25, "snap": false, "text": "A calmer way to get things done." }
+  ]
+}
